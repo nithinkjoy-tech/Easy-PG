@@ -7,4 +7,9 @@ let pool = mysql.createPool({
   password: "password",
 });
 
+pool
+  .query("select 1+1 as Solution")
+  .then(() => console.log("connected to database"))
+  .catch(err => console.log(err.sqlMessage));
+
 module.exports = pool;

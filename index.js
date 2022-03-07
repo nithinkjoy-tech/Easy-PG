@@ -1,11 +1,10 @@
-const connection= require("./startup/db")
-const express=require("express")
-const app=express()
+const express = require("express");
+const app = express();
+require("./startup/db")
 
+// require("dotenv").config();
+require("./startup/cors")(app);
+require("./startup/routes")(app);
 
-
-
-let port=process.env.PORT||3000
-app.listen(port,()=>{
-    console.log(`Connected to port ${port}`)
-})
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening to port ${port}`));
