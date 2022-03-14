@@ -1,15 +1,11 @@
-const mysql = require("mysql2/promise");
+const mongoose = require("mongoose");
 
-let pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  database: "easypg",
-  password: "password",
-});
-
-pool
-  .query("select 1+1 as Solution")
-  .then(() => console.log("connected to database"))
-  .catch(err => console.log(err.sqlMessage));
-
-module.exports = pool;
+module.exports = () => {
+  mongoose
+    .connect("mongodb://127.0.0.1:27017/easypg",{
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    })
+    .then(() => console.log("Connected to database"))
+    .catch(err => console.log(err));
+};
