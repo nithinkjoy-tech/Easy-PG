@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     minlength: 9,
     maxlength: 11,
     default: null,
-  }, 
+  },
   password: {
     type: String,
     required: true,
@@ -41,14 +41,14 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: null,
   },
-  debt:{
-      type:Object,
-      default: null,
+  debtors: {
+    type: Object,
+    default: null,
   },
-  credit:{
-      type:Object,
-      default: null,
-  }
+  credit: {
+    type: Object,
+    default: null,
+  },
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -110,11 +110,7 @@ function validateUserPassword(data) {
 
 function validateResetUserPassword(data) {
   const schema = Yup.object({
-    newPassword: Yup.string()
-      .required("Password is required")
-      .min(6)
-      .max(256)
-      .label("Password"),
+    newPassword: Yup.string().required("Password is required").min(6).max(256).label("Password"),
     confirmPassword: Yup.string().oneOf([Yup.ref("newPassword"), null], "Passwords must match"),
   });
 
@@ -125,3 +121,8 @@ exports.User = User;
 exports.validateUser = validateUser;
 exports.validateUserPassword = validateUserPassword;
 exports.validateResetUserPassword = validateResetUserPassword;
+
+debtors = {
+  pacchu: 50,
+  jish: 100,
+};
