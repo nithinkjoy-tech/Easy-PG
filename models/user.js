@@ -41,7 +41,11 @@ const userSchema = new mongoose.Schema({
     type: Object,
     default: null,
   },
-  debtors: {
+  amountsToCollect: {
+    type: Object,
+    default: null,
+  },
+  payableAmount: {
     type: Object,
     default: null,
   },
