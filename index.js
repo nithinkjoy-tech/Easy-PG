@@ -6,5 +6,5 @@ require("dotenv").config();
 require("./startup/cors")(app);
 require("./startup/routes")(app);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3800;
 app.listen(port, () => console.log(`Listening to port ${port}`));
