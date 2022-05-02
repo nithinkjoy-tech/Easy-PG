@@ -40,7 +40,7 @@ router.get("/", [auth], async (req, res) => {
       element.amountsToCollect = element?.amountsToCollect[req.user._id];
     }
   });
-
+  console.log(result,"rs");
   res.send(result);
 });
 
@@ -55,9 +55,20 @@ router.get("/:id", [auth], async (req, res) => {
   console.log(req.params.id);
   //let output=[]
   const result = await Transaction.findById(req.params.id).select({repaymentDetails:1}).lean();
-  console.log(result.repaymentDetails,"rs")
-
+  console.log(result.repaymentDetails,"rs1")
+  
   res.send(result.repaymentDetails);
+});
+
+router.get("/getmax/:id", [auth], async (req, res) => {
+  console.log(req.params.id);
+  const result = await Transaction.findById(req.params.id).select({repaymentDetails:1,amount:1}).lean();
+  let paidAmount=0;
+  result.repaymentDetails.forEach((element)=>{
+    paidAmount+=element.amountPaid
+  })
+  console.log(result.amount,"m")
+  res.send({maxAmount:result.amount-paidAmount});
 });
 
 router.put("/", [auth], async (req, res) => {
@@ -66,8 +77,8 @@ router.put("/", [auth], async (req, res) => {
   //console.log(result1,"r1")
   result1.payableAmount[req.user._id] = result1.payableAmount[req.user._id] - amountPaid;
 
-  if (result1.payableAmount[req.user._id] - amountPaid < 0)
-    return res.status(400).send("check your amount");
+  // if (result1.payableAmount[req.user._id] - amountPaid < 0)
+  //   return res.status(400).send("check your amount");
 
   const result2 = await User.findById(req.user._id);
   result2.amountsToCollect[userId] = result2.amountsToCollect[userId] - amountPaid;
@@ -85,16 +96,20 @@ router.put("/", [auth], async (req, res) => {
   const transaction = await Transaction.findById(transactionId);
   let totalAmount=0
   transaction.repaymentDetails.forEach((obj)=>{
-    totalAmount+=obj.amount
+    console.log(obj.amountPaid,"oa")
+    totalAmount+=obj.amountPaid
   })
 
   totalAmount+=amountPaid;
+  console.log(totalAmount,transaction.amount,"k")
   if(totalAmount==transaction.amount){
-    transaction.status=="completed"
+    transaction.status="completed"
   }
 
+  transaction.markModified("status")
+
   transaction.repaymentDetails.push(details)
-  transaction.markModified("repaymentDetails");
+  transaction.markModified("repaymentDetails","status");
   transaction.save()
   res.send("done");
 });

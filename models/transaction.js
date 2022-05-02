@@ -9,13 +9,20 @@ const transactionSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 50,
   },
+  payerId:{
+    type:String,
+    required:true,
+  },
   amount:{
       type:Number,
       min:1,
       max:100000,
       required:true
   },
-  
+  debtName:{
+    type:String,
+    required:true
+  },
   status:{
     type:String,
     required:true,
