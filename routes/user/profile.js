@@ -32,14 +32,14 @@ router.get("/", [auth], async (req, res) => {
         payableAmountPresent=true
       }
     }
-    if(!payableAmountPresent) element.payableAmount=0
-  });
-
-  result.forEach(element => {
     if (element?.amountsToCollect) {
       element.amountsToCollect = element?.amountsToCollect[req.user._id];
     }
+    if(!payableAmountPresent) element.payableAmount=0
   });
+
+  // result.forEach(element => {
+  // });
   console.log(result,"rs");
   res.send(result);
 });
