@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    validate: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    validate: /^[\w-\.]+@([\w-]+\.)+[\w-]{1,4}$/,
   },
   address: {
     type: String,
