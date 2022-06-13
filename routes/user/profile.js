@@ -30,6 +30,9 @@ router.get("/", [auth], async (req, res) => {
       if(_.has(element.payableAmount,req.user._id)){
         element.payableAmount = element?.payableAmount[req.user._id];
         payableAmountPresent=true
+      }else{
+        payableAmountPresent=true
+        element.payableAmount=0
       }
     }
     if (element?.amountsToCollect) {

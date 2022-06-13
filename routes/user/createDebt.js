@@ -16,31 +16,37 @@ router.get("/", [auth], async (req, res) => {
 });
 
 router.get("/:id", [auth], async (req, res) => {
-  const result = await Transaction.find().where("payerId").in(req.user._id).where("debtorId").in(req.params.id).lean();
+  const result = await Transaction.find()
+    .where("payerId")
+    .in(req.user._id)
+    .where("debtorId")
+    .in(req.params.id)
+    .lean();
   //console.log(result,"rs")///loooo
-  result.forEach((transaction)=>{
-    let paid=0;
-    transaction.repaymentDetails.forEach(payment=>{
-      paid+=payment.amountPaid
-    })
-    transaction["paid"]=paid
-  })
-  console.log(result,"tra")
+  result.forEach(transaction => {
+    let paid = 0;
+    transaction.repaymentDetails.forEach(payment => {
+      paid += payment.amountPaid;
+    });
+    transaction["paid"] = paid;
+  });
+  console.log(result, "tra");
   res.send(result);
 });
 
 router.post("/", [auth], async (req, res) => {
-  let {includingMe, debtors, amount,debtName} = req.body;
-  console.log(debtors,"ds") 
+  let {includingMe, debtors, amount, debtName} = req.body;
+  console.log(debtors, "ds");
   let perPersonAmount;
   if (includingMe) {
     perPersonAmount = amount / (debtors.length + 1);
   } else {
     perPersonAmount = amount / debtors.length;
   }
-  perPersonAmount=perPersonAmount|0
+  perPersonAmount = perPersonAmount | 0;
+  console.log(req.user._id,"id");
   const result = await User.findById(req.user._id);
-  let debtorObject = result.amountsToCollect || {};
+  let debtorObject = result?.amountsToCollect || {};
   let payableObject, result1;
 
   //debtor is a person who need to pay back money to someone
@@ -53,9 +59,10 @@ router.post("/", [auth], async (req, res) => {
     }
   }
 
+  console.log(result,"rs")
   result.amountsToCollect = debtorObject;
   for (let userId in debtorObject) {
-    console.log(userId,"uid")
+    console.log(userId, "uid");
     result1 = await User.findById(userId);
     payableObject = result1.payableAmount || {};
 
@@ -81,8 +88,13 @@ router.post("/", [auth], async (req, res) => {
 
   let transaction;
   for (let i = 0; i < debtors.length; i++) {
-    let result=new Transaction({debtorId: debtors[i],payerId:req.user._id, amount: Math.ceil(perPersonAmount),debtName:debtName});
-    await result.save()
+    let result = new Transaction({
+      debtorId: debtors[i],
+      payerId: req.user._id,
+      amount: Math.ceil(perPersonAmount),
+      debtName: debtName,
+    });
+    await result.save();
   }
 
   res.send(await result.save());

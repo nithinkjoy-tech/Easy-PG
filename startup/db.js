@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 module.exports = () => {
+  console.log(process.env.mongoDBKey)
   mongoose
     .connect(process.env.mongoDBKey,{
         useUnifiedTopology: true,

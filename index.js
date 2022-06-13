@@ -1,8 +1,8 @@
 const express = require("express");
+// require("dotenv").config();
 const app = express();
 require("./startup/db")();
 
-// require("dotenv").config();
 require("./startup/cors")(app);
 require("./startup/routes")(app);
 
