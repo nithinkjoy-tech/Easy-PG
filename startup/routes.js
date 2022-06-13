@@ -4,6 +4,7 @@ const addUser=require("../routes/admin/addUser")
 const userSignin=require("../routes/user/signin")
 const userProfile=require("../routes/user/profile")
 const createDebt=require("../routes/user/createDebt")
+const debtDetails=require("../routes/user/debtdetails")
 // const forgot=require("../routes/forgot")
 // const dashboard=require("../routes/dashboard")
 // const changePassword=require("../routes/changePassword")
@@ -16,6 +17,7 @@ module.exports = function (app) {
   app.use("/api/user/signin", userSignin);
   app.use("/api/user/profile", userProfile);
   app.use("/api/user/createdebt", createDebt);
+  app.use("/api/user/debtdetails", debtDetails);
 //   app.use("/api/signup", signup);
 //   app.use("/api/forgot", forgot);
 //   app.use("/api/dashboard", dashboard);

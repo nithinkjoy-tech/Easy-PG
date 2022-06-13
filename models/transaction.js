@@ -9,38 +9,35 @@ const transactionSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 50,
   },
-  payerId:{
-    type:String,
-    required:true,
+  payerId: {
+    type: String,
+    required: true,
   },
-  amount:{
-      type:Number,
-      min:1,
-      max:100000,
-      required:true
+  amount: {
+    type: Number,
+    min: 1,
+    max: 100000,
+    required: true,
   },
-  debtName:{
-    type:String,
-    required:true
+  debtName: {
+    type: String,
+    required: true,
   },
-  status:{
-    type:String,
-    required:true,
-    default:"pending"
+  status: {
+    type: String,
+    required: true,
+    default: "pending",
   },
-  repaymentDetails:{
-      type:Array,
-      default:[]
-  }
+  repaymentDetails: {
+    type: Array,
+    default: [],
+  },
+  date: {
+    type: String,
+    required: true,
+  },
 });
-
-
 
 const Transaction = mongoose.model("transaction", transactionSchema);
 
 exports.Transaction = Transaction;
-
-debtors = {
-  pacchu: 50,
-  jish: 100,
-};

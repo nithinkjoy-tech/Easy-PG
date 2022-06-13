@@ -5,6 +5,7 @@ const {User} = require("../../models/user");
 const {Transaction} = require("../../models/transaction");
 const auth = require("../../middleware/auth");
 const _ = require("lodash");
+const moment=require("moment")
 
 router.get("/", [auth], async (req, res) => {
   const result = await User.find().where("username").ne(req.user.username).select({_id: 1}).lean();
@@ -93,6 +94,7 @@ router.post("/", [auth], async (req, res) => {
       payerId: req.user._id,
       amount: Math.ceil(perPersonAmount),
       debtName: debtName,
+      date: moment().utcOffset(330).format("ddd, DD MMM YYYY HH:mm:ss [IST]"),
     });
     await result.save();
   }
