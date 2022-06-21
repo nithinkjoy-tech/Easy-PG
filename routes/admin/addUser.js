@@ -4,7 +4,7 @@ const {User} = require("../../models/user");
 const findUser = require("../../utils/findUser");
 
 router.post("/", async (req, res) => {
-//   console.log(req.body, "bdy");
+  //   console.log(req.body, "bdy");
   let email = await User.findOne({
     email: req.body.email.toLowerCase(),
   });
